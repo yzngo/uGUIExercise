@@ -36,21 +36,28 @@ namespace Baum2.Sample
             var welcomeText = ui.Get<Text>("Welcome/Text");
             var list = ui.Get<List>("PiyoList");
 
-            ui.Get<Button>("HogeButton").onClick.AddListener(() =>
-            {
-                welcomeText.text = "Welcome to Hoge!";
-                ui.Get("Image1").SetActive(true);
-                ui.Get("Image2").SetActive(false);
-                list.Resize(++listSize);
-            });
+            //var a = ui.Get<Button>("TestButton");
+            //ui.Get<Button>("TestButton").onClick.AddListener(() =>
+            //{
+            //    welcomeText.text = "Welcome to Hoge!";
+            //    ui.Get("Image1").SetActive(true);
+            //    ui.Get("Image2").SetActive(false);
+            //    list.Resize(++listSize);
+            //});
 
-            ui.Get<Button>("FugaButton").onClick.AddListener(() =>
-            {
-                welcomeText.text = "Welcome to Fuga!";
-                ui.Get("Image1").SetActive(false);
-                ui.Get("Image2").SetActive(true);
-                list.Resize(--listSize);
-            });
+
+            //ui.Get<Button>("TestButton").onClick.AddListener(() =>
+            //{
+            //    welcomeText.text = "Welcome to Fuga!";
+            //    ui.Get("Image1").SetActive(false);
+            //    ui.Get("Image2").SetActive(true);
+            //    list.Resize(--listSize);
+            //});
+        }
+
+        public void test1()
+        {
+
         }
 
         public void ListSample()
