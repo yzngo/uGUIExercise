@@ -40,11 +40,11 @@ namespace Baum2.Editor
             }
             if (files.Length > 1)
             {
-                Debug.LogErrorFormat("{0}ファイルがプロジェクト内に複数個存在します。", fileName);
+                Debug.LogErrorFormat("{0}There are multiple files in the project.", fileName);
             }
             if (files.Length == 0)
             {
-                throw new System.ApplicationException(string.Format("{0}ファイルがプロジェクト内に存在しません。", fileName));
+                throw new System.ApplicationException(string.Format("{0}The file does not exist in the project.", fileName));
             }
             string path = files[0];
             return path.Substring(0, path.Length - fileName.Length);
