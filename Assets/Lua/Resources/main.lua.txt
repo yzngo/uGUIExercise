@@ -1,0 +1,6 @@
+require("ui")
+
+function main()
+    ui:Test("main");
+end
+

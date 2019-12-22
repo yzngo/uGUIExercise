@@ -1,0 +1,8 @@
+ui = {
+    a = 100;
+}
+
+function ui:Test( param )
+    print(tostring(self.a).." "..param);
+end
+
