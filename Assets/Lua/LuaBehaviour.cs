@@ -14,27 +14,30 @@ using System;
 
 namespace XLuaTest
 {
-    [System.Serializable]
-    public class Injection
-    {
-        public string name;
-        public GameObject value;
-    }
+    // [System.Serializable]
+    // public class Injection
+    // {
+    //     public string name;
+    //     public GameObject value;
+    // }
 
     [LuaCallCSharp]
     public class LuaBehaviour : MonoBehaviour
     {
         public TextAsset luaScript;
-        public Injection[] injections;
+        //public Injection[] injections;
 
         internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
         internal static float lastGCTime = 0;
         internal const float GCInterval = 1;//1 second 
 
+        private Action luaOnEnable;
         private Action luaStart;
+        private Action luaFixedUpdate;
         private Action luaUpdate;
+        private Action luaLateUpdate;
+        private Action luaOnDisable;
         private Action luaOnDestroy;
-
         private LuaTable scriptEnv;
 
         void Awake()
@@ -48,21 +51,33 @@ namespace XLuaTest
             meta.Dispose();
 
             scriptEnv.Set("self", this);
-            foreach (var injection in injections)
-            {
-                scriptEnv.Set(injection.name, injection.value);
-            }
+            // foreach (var injection in injections)
+            // {
+            //     scriptEnv.Set(injection.name, injection.value);
+            // }
 
-            luaEnv.DoString(luaScript.text, "LuaTestScript", scriptEnv);
+            luaEnv.DoString(luaScript.text, "TestPage", scriptEnv);
 
             Action luaAwake = scriptEnv.Get<Action>("awake");
+            scriptEnv.Get("onenable", out luaOnEnable);
             scriptEnv.Get("start", out luaStart);
+            scriptEnv.Get("fixedupdate", out luaFixedUpdate);
             scriptEnv.Get("update", out luaUpdate);
+            scriptEnv.Get("lateupdate", out luaLateUpdate);
+            scriptEnv.Get("ondisable", out luaOnDisable);
             scriptEnv.Get("ondestroy", out luaOnDestroy);
-
+            
             if (luaAwake != null)
             {
                 luaAwake();
+            }
+        }
+
+        void OnEnable()
+        {
+            if (luaOnEnable != null)
+            {
+                luaOnEnable();
             }
         }
 
@@ -75,6 +90,14 @@ namespace XLuaTest
             }
         }
 
+        void FixedUpdate()
+        {
+            if(luaFixedUpdate != null)
+            {
+                luaFixedUpdate();
+            }
+        }
+
         // Update is called once per frame
         void Update()
         {
@@ -82,10 +105,27 @@ namespace XLuaTest
             {
                 luaUpdate();
             }
+            //todo what?
             if (Time.time - LuaBehaviour.lastGCTime > GCInterval)
             {
                 luaEnv.Tick();
                 LuaBehaviour.lastGCTime = Time.time;
+            }
+        }
+
+        void LateUpdate()
+        {
+            if(luaLateUpdate != null)
+            {
+                luaLateUpdate();
+            }
+        }
+
+        void OnDisable()
+        {
+            if(luaOnDisable != null)
+            {
+                luaOnDisable();
             }
         }
 
@@ -96,10 +136,14 @@ namespace XLuaTest
                 luaOnDestroy();
             }
             luaOnDestroy = null;
+            luaOnDisable = null;
+            luaLateUpdate = null;
+            luaFixedUpdate = null;
             luaUpdate = null;
+            luaOnEnable = null;
             luaStart = null;
             scriptEnv.Dispose();
-            injections = null;
+            //injections = null;
         }
     }
 }

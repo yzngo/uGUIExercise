@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 4338569972523114659}
   - component: {fileID: 1252048587253870407}
   m_Layer: 0
-  m_Name: TestButton
+  m_Name: TButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1982,6 +1982,7 @@ GameObject:
   - component: {fileID: 3307318516061035093}
   - component: {fileID: 1865627497760574807}
   - component: {fileID: 2124197911029475894}
+  - component: {fileID: 5859171643419752469}
   m_Layer: 0
   m_Name: Sample
   m_TagString: Untagged
@@ -2280,6 +2281,19 @@ MonoBehaviour:
     - TestButton
     - ButtonSample
     - Sample
+--- !u!114 &5859171643419752469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7854854762099634846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9173d38911503c4a9a371b0760bdd15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  luaScript: {fileID: 4900000, guid: d8a00ddbed1383a42a92ea7b3b789e1b, type: 3}
 --- !u!1 &7972310883390893667
 GameObject:
   m_ObjectHideFlags: 0

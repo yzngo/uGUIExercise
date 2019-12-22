@@ -13,10 +13,11 @@ namespace Baum2.Sample
 
         public void Start()
         {
+            Debug.Log("sample start");
             ui = BaumUI.Instantiate(gameObject, uiPrefab);
             listSize = 10;
             ImageSample();
-            ButtonSample();
+            //ButtonSample();
             ListSample();
         }
 
