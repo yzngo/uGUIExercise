@@ -1,5 +1,5 @@
 ui = {
-    a = 100;
+    a = "ui:Test ";
 }
 
 function ui:Test( param )
