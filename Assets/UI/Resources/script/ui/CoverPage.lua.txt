@@ -1,15 +1,15 @@
 local test = 10;
 local b = true;
+
 ---lua behavour -------------------------------------------------------------------
 function Awake()
-	print("test page awake");
+	garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
 end
 function OnEnable()
 	-- print("lua onenable...");
 end
 
 function Start()
-	garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
 end
 
 function FixedUpdate()
