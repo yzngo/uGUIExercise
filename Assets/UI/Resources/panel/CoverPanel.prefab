@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 4338569972523114659}
   - component: {fileID: 1252048587253870407}
   m_Layer: 0
-  m_Name: TButton
+  m_Name: TestButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2295,8 +2295,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   luaScript: {fileID: 4900000, guid: d8a00ddbed1383a42a92ea7b3b789e1b, type: 3}
   injections:
-  - name: button
+  - name: button1
     value: {fileID: 1549637489474252275}
+  - name: button2
+    value: {fileID: 1438893665048682733}
 --- !u!1 &7972310883390893667
 GameObject:
   m_ObjectHideFlags: 0

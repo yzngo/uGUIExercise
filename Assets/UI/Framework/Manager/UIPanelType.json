@@ -1,0 +1,7 @@
+{
+    "panelInfoList":
+    [
+        {"panelType":"Cover","path":"panel/CoverPanel"},
+        {"panelType":"Garage","path":"panel/GaragePanel"}
+    ]
+}

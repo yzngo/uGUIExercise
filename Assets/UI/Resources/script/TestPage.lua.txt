@@ -1,4 +1,4 @@
-local speed = 10;
+local test = 10;
 
 ---lua behavour -------------------------------------------------------------------
 function OnEnable()
@@ -7,7 +7,8 @@ end
 
 function Start()
 	ui:Test("testPage");
-	button:GetComponent("Button").onClick:AddListener(Event_Clicked);
+	button1:GetComponent("Button").onClick:AddListener(function() Event_Button1("button1") end);
+	button2:GetComponent("Button").onClick:AddListener(function() Event_Button2("button2") end);
 end
 
 function FixedUpdate()
@@ -30,11 +31,17 @@ function OnDestroy()
 end
 
 --- event -------------------------------------------------------------------------
-function Event_Clicked()
-	OnClicked();
+function Event_Button1(param)
+	test = test + 10;
+	OnClicked( test );
+end
+
+function Event_Button2(param)
+	test = test - 10;
+	OnClicked( test );
 end
 
 -- function -----------------------------------------------------------------------
-function OnClicked()
-	print("clicked");
+function OnClicked(param)
+	print("clicked "..param);
 end

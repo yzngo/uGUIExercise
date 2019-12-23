@@ -1,4 +1,4 @@
-require("ui")
+require("script/ui")
 
 function main()
     ui:Test("main");
