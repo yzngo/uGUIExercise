@@ -12,152 +12,160 @@ using System.Collections.Generic;
 using XLua;
 using System;
 
-namespace XLuaTest
+[System.Serializable]
+public class Injection
 {
-    [System.Serializable]
-    public class Injection
+    public string name;
+    public GameObject value;
+}
+
+
+[LuaCallCSharp]
+public class LuaBehaviour : MonoBehaviour
+{
+    public TextAsset luaScript;
+    public Injection[] injections;
+    //internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
+    internal static LuaEnv luaEnv = LuaEnvInstance.Instance; //all lua behaviour shared one luaenv only!
+    internal static float lastGCTime = 0;
+    internal const float GCInterval = 1;//1 second 
+
+    private Action luaOnEnable;
+    private Action luaStart;
+    private Action luaFixedUpdate;
+    private Action luaUpdate;
+    private Action luaLateUpdate;
+    private Action luaOnDisable;
+    private Action luaOnDestroy;
+    private Action luaOnGUI;
+
+    [CSharpCallLua]
+    public delegate int FDelegate(string a, string b, string c,string d);
+    private FDelegate luaEventDesktop;
+    private LuaTable scriptEnv;
+
+    void Awake()
     {
-        public string name;
-        public GameObject value;
+        scriptEnv = luaEnv.NewTable();
+
+        // 为每个脚本设置一个独立的环境，可一定程度上防止脚本间全局变量、函数冲突
+        LuaTable meta = luaEnv.NewTable();
+        meta.Set("__index", luaEnv.Global);
+        scriptEnv.SetMetaTable(meta);
+        meta.Dispose();
+
+        scriptEnv.Set("self", this);
+        foreach (var injection in injections)
+        {
+            scriptEnv.Set(injection.name, injection.value);
+        }
+        luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
+
+        Action luaAwake = scriptEnv.Get<Action>("Awake");
+        scriptEnv.Get("OnEnable", out luaOnEnable);
+        scriptEnv.Get("Start", out luaStart);
+        scriptEnv.Get("FixedUpdate", out luaFixedUpdate);
+        scriptEnv.Get("Update", out luaUpdate);
+        scriptEnv.Get("LateUpdate", out luaLateUpdate);
+        scriptEnv.Get("OnDisable", out luaOnDisable);
+        scriptEnv.Get("OnDestroy", out luaOnDestroy);
+        //scriptEnv.Get("Event_Desktop", out luaEventDesktop);
+        scriptEnv.Get("OnGUI", out luaOnGUI);
+        // todo
+        //luaEventDesktop = scriptEnv.Get<FDelegate>("Event_Desktop");
+
+        if (luaAwake != null)
+        {
+            luaAwake();
+        }
     }
 
-    [System.Serializable]
-    public class InjectString
+
+    void OnEnable()
     {
-        public string name;
-        public string value;
+        if (luaOnEnable != null)
+        {
+            luaOnEnable();
+        }
     }
 
-    [LuaCallCSharp]
-    public class LuaBehaviour : MonoBehaviour
+    // Use this for initialization
+    void Start()
     {
-        public TextAsset luaScript;
-        public Injection[] injections;
-        //internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
-        internal static LuaEnv luaEnv = LuaEnvInstance.Instance; //all lua behaviour shared one luaenv only!
-        internal static float lastGCTime = 0;
-        internal const float GCInterval = 1;//1 second 
-
-        private Action luaOnEnable;
-        private Action luaStart;
-        private Action luaFixedUpdate;
-        private Action luaUpdate;
-        private Action luaLateUpdate;
-        private Action luaOnDisable;
-        private Action luaOnDestroy;
-        private Action luaOnGUI;
-        private LuaTable scriptEnv;
-
-        void Awake()
+        if (luaStart != null)
         {
-            scriptEnv = luaEnv.NewTable();
-
-            // 为每个脚本设置一个独立的环境，可一定程度上防止脚本间全局变量、函数冲突
-            LuaTable meta = luaEnv.NewTable();
-            meta.Set("__index", luaEnv.Global);
-            scriptEnv.SetMetaTable(meta);
-            meta.Dispose();
-
-            scriptEnv.Set("self", this);
-            foreach (var injection in injections)
-            {
-                scriptEnv.Set(injection.name, injection.value);
-            }
-            luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
-
-            Action luaAwake = scriptEnv.Get<Action>("Awake");
-            scriptEnv.Get("OnEnable", out luaOnEnable);
-            scriptEnv.Get("Start", out luaStart);
-            scriptEnv.Get("FixedUpdate", out luaFixedUpdate);
-            scriptEnv.Get("Update", out luaUpdate);
-            scriptEnv.Get("LateUpdate", out luaLateUpdate);
-            scriptEnv.Get("OnDisable", out luaOnDisable);
-            scriptEnv.Get("OnDestroy", out luaOnDestroy);
-            scriptEnv.Get("OnGUI", out luaOnGUI);
-            
-            if (luaAwake != null)
-            {
-                luaAwake();
-            }
+            luaStart();
         }
+    }
 
-        void OnEnable()
+    void FixedUpdate()
+    {
+        if(luaFixedUpdate != null)
         {
-            if (luaOnEnable != null)
-            {
-                luaOnEnable();
-            }
+            luaFixedUpdate();
         }
+    }
 
-        // Use this for initialization
-        void Start()
+    // Update is called once per frame
+    void Update()
+    {
+        if (luaUpdate != null)
         {
-            if (luaStart != null)
-            {
-                luaStart();
-            }
+            luaUpdate();
         }
+        //todo what?
+        if (Time.time - LuaBehaviour.lastGCTime > GCInterval)
+        {
+            luaEnv.Tick();
+            LuaBehaviour.lastGCTime = Time.time;
+        }
+    }
 
-        void FixedUpdate()
+    void LateUpdate()
+    {
+        if(luaLateUpdate != null)
         {
-            if(luaFixedUpdate != null)
-            {
-                luaFixedUpdate();
-            }
+            luaLateUpdate();
         }
+    }
 
-        // Update is called once per frame
-        void Update()
+    void OnDisable()
+    {
+        if(luaOnDisable != null)
         {
-            if (luaUpdate != null)
-            {
-                luaUpdate();
-            }
-            //todo what?
-            if (Time.time - LuaBehaviour.lastGCTime > GCInterval)
-            {
-                luaEnv.Tick();
-                LuaBehaviour.lastGCTime = Time.time;
-            }
+            luaOnDisable();
         }
+    }
+    void OnGUI()
+    {
+        if (luaOnGUI != null)
+        {
+            luaOnGUI();
+        }
+    }
+    void OnDestroy()
+    {
+        if (luaOnDestroy != null)
+        {
+            luaOnDestroy();
+        }
+        luaEventDesktop = null;
+        luaOnDestroy = null;
+        luaOnDisable = null;
+        luaLateUpdate = null;
+        luaFixedUpdate = null;
+        luaUpdate = null;
+        luaOnEnable = null;
+        luaStart = null;
+        scriptEnv.Dispose();
+        injections = null;
+    }
 
-        void LateUpdate()
-        {
-            if(luaLateUpdate != null)
-            {
-                luaLateUpdate();
-            }
+    public int SendMessage(string id,string param1, string param2,string param3)
+    {
+        if (luaEventDesktop != null){
+            return luaEventDesktop(id,param1,param2,param3);
         }
-
-        void OnDisable()
-        {
-            if(luaOnDisable != null)
-            {
-                luaOnDisable();
-            }
-        }
-        void OnGUI()
-        {
-            if (luaOnGUI != null)
-            {
-                luaOnGUI();
-            }
-        }
-        void OnDestroy()
-        {
-            if (luaOnDestroy != null)
-            {
-                luaOnDestroy();
-            }
-            luaOnDestroy = null;
-            luaOnDisable = null;
-            luaLateUpdate = null;
-            luaFixedUpdate = null;
-            luaUpdate = null;
-            luaOnEnable = null;
-            luaStart = null;
-            scriptEnv.Dispose();
-            injections = null;
-        }
+        return -1;
     }
 }

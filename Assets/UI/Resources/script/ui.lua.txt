@@ -10,10 +10,12 @@ function ui:OpenWindow( page )
     if type(page) == "string" then
         local obj = self.m_uiMgr:GetPage( page );
         self.m_uiMgr:OpenWindow( obj );
+        self:SendDesktopEvent("hahahhaha");
         return obj;
     else
         self.self.m_uiMgr:OpenWindow( page );
     end
+    
 end
 
 function ui:CloseWindow( page )
@@ -25,4 +27,8 @@ function ui:CloseWindow( page )
 		self.m_uiMgr:CloseWindow( page );
 		return page;
 	end
+end
+
+function ui:SendDesktopEvent( event, param1, param2, param3 )
+    self.m_uiMgr:SendMsg( event, param1 or "", param2 or "", param3 or "" );
 end

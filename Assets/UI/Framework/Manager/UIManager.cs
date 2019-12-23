@@ -47,11 +47,29 @@ public class UIManager
     public void OpenWindow(GameObject page)
     {
         page.SetActive(true);
+        page.transform.SetAsLastSibling();
     }
 
     public void CloseWindow(GameObject page)
     {
         page.SetActive(false);
+    }
+
+    public void SendMsg(string id, string param1, string param2, string param3)
+    {
+        //遍历所有原件，1.是激活状态 2.luabehavour组件 存在， 则调用luabehavour中的message函数
+        foreach (KeyValuePair<string,GameObject> page in pageDict)
+        {
+            var luaBehaviour = page.Value.GetComponent<LuaBehaviour>();
+            if(page.Value.activeSelf && luaBehaviour)
+            {
+                var ret = luaBehaviour.SendMessage(id,param1,param2,param3);
+                if(ret == 1)
+                {
+                    return;
+                }
+            }
+        }
     }
 
     //解析json文件

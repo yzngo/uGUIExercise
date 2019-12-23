@@ -30,6 +30,11 @@ function OnDestroy()
 end
 
 --- event -------------------------------------------------------------------------
+function Event_Desktop(id, param0, param1, param2)
+	print("event desktop");
+	return 0;
+end
+
 function Event_Cover(param)
 	print("button2");
 	ui:OpenWindow("cover");
