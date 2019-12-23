@@ -1,0 +1,7 @@
+{
+    "list":
+    [
+        {"name":"cover","path":"page/coverPage"},
+        {"name":"garage","path":"page/garagePage"}
+    ]
+}

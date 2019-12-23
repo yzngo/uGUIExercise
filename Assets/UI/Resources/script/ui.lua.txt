@@ -1,8 +1,28 @@
 ui = {
-    a = "ui:Test ";
+    m_uiMgr;
 }
 
-function ui:Test( param )
-    print(tostring(self.a).." "..param);
+function ui:Init( param )
+    self.m_uiMgr = CS.UIManager.Instance;
 end
 
+function ui:OpenWindow( page )
+    if type(page) == "string" then
+        local obj = self.m_uiMgr:GetPage( page );
+        self.m_uiMgr:OpenWindow( obj );
+        return obj;
+    else
+        self.self.m_uiMgr:OpenWindow( page );
+    end
+end
+
+function ui:CloseWindow( page )
+    if type( page ) == "string" then
+		local obj = self.m_uiMgr:GetPage( page );
+		self.m_uiMgr:CloseWindow( obj );
+		return obj;
+	else
+		self.m_uiMgr:CloseWindow( page );
+		return page;
+	end
+end

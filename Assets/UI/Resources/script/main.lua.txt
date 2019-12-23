@@ -1,6 +1,7 @@
 require("script/ui")
 
 function main()
-    ui:Test("main");
+    ui:Init();
+    ui:OpenWindow( "cover" );
 end
 

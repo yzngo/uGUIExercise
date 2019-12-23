@@ -21,14 +21,20 @@ namespace XLuaTest
         public GameObject value;
     }
 
+    [System.Serializable]
+    public class InjectString
+    {
+        public string name;
+        public string value;
+    }
+
     [LuaCallCSharp]
     public class LuaBehaviour : MonoBehaviour
     {
         public TextAsset luaScript;
         public Injection[] injections;
-
         //internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
-        internal static LuaEnv luaEnv = LoadLua.luaenv; //all lua behaviour shared one luaenv only!
+        internal static LuaEnv luaEnv = LuaEnvInstance.Instance; //all lua behaviour shared one luaenv only!
         internal static float lastGCTime = 0;
         internal const float GCInterval = 1;//1 second 
 
@@ -57,10 +63,9 @@ namespace XLuaTest
             {
                 scriptEnv.Set(injection.name, injection.value);
             }
-            
             luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
 
-            Action luaAwake = scriptEnv.Get<Action>("awake");
+            Action luaAwake = scriptEnv.Get<Action>("Awake");
             scriptEnv.Get("OnEnable", out luaOnEnable);
             scriptEnv.Get("Start", out luaStart);
             scriptEnv.Get("FixedUpdate", out luaFixedUpdate);

@@ -1,14 +1,15 @@
 local test = 10;
-
+local b = true;
 ---lua behavour -------------------------------------------------------------------
+function Awake()
+	print("test page awake");
+end
 function OnEnable()
-	print("lua onenable...");
+	-- print("lua onenable...");
 end
 
 function Start()
-	ui:Test("testPage");
-	button1:GetComponent("Button").onClick:AddListener(function() Event_Button1("button1") end);
-	button2:GetComponent("Button").onClick:AddListener(function() Event_Button2("button2") end);
+	garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
 end
 
 function FixedUpdate()
@@ -31,14 +32,9 @@ function OnDestroy()
 end
 
 --- event -------------------------------------------------------------------------
-function Event_Button1(param)
-	test = test + 10;
-	OnClicked( test );
-end
-
-function Event_Button2(param)
-	test = test - 10;
-	OnClicked( test );
+function Event_Garage(param)
+	ui:OpenWindow("garage");
+	ui:CloseWindow(self.gameObject);
 end
 
 -- function -----------------------------------------------------------------------

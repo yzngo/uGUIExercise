@@ -1,0 +1,46 @@
+local test = 10;
+local b = true;
+---lua behavour -------------------------------------------------------------------
+function Awake()
+	print("test page awake");
+end
+function OnEnable()
+	-- print("lua onenable...");
+end
+
+function Start()
+	coverBtn:GetComponent("Button").onClick:AddListener(function() Event_Cover("button2") end);
+end
+
+function FixedUpdate()
+end
+
+function Update()
+end
+
+function LateUpdate()
+end
+
+function OnDisable()
+end
+
+function OnGUI()
+	CS.UnityEngine.GUI.Box(CS.UnityEngine.Rect(10,10,100,90),"看这里！");
+end
+
+function OnDestroy()
+end
+
+--- event -------------------------------------------------------------------------
+function Event_Cover(param)
+	print("button2");
+	ui:OpenWindow("cover");
+	ui:CloseWindow(self.gameObject);
+	test = test - 10;
+	OnClicked( test );
+end
+
+-- function -----------------------------------------------------------------------
+function OnClicked(param)
+	print("clicked "..param);
+end
