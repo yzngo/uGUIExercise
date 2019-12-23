@@ -16,26 +16,26 @@ namespace Baum2.Sample
             Debug.Log("sample start");
             ui = BaumUI.Instantiate(gameObject, uiPrefab);
             listSize = 10;
-            ImageSample();
+            //ImageSample();
             //ButtonSample();
-            ListSample();
+            //ListSample();
         }
 
         public void Update()
         {
-            SliderSample();
+           // SliderSample();
         }
 
         public void ImageSample()
         {
-            ui.Get("Image1").SetActive(false);
-            ui.Get("Image2").SetActive(false);
+            // ui.Get("Image1").SetActive(false);
+            // ui.Get("Image2").SetActive(false);
         }
 
         public void ButtonSample()
         {
-            var welcomeText = ui.Get<Text>("Welcome/Text");
-            var list = ui.Get<List>("PiyoList");
+            // var welcomeText = ui.Get<Text>("Welcome/Text");
+            // var list = ui.Get<List>("PiyoList");
 
             //var a = ui.Get<Button>("TestButton");
             //ui.Get<Button>("TestButton").onClick.AddListener(() =>

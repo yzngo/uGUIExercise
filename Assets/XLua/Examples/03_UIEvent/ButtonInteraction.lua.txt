@@ -11,3 +11,5 @@ function start()
 		print("clicked, you input is '" ..input:GetComponent("InputField").text .."'")
 	end)
 end
+
+ 

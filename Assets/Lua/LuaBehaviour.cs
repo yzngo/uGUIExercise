@@ -14,20 +14,21 @@ using System;
 
 namespace XLuaTest
 {
-    // [System.Serializable]
-    // public class Injection
-    // {
-    //     public string name;
-    //     public GameObject value;
-    // }
+    [System.Serializable]
+    public class Injection
+    {
+        public string name;
+        public GameObject value;
+    }
 
     [LuaCallCSharp]
     public class LuaBehaviour : MonoBehaviour
     {
         public TextAsset luaScript;
-        //public Injection[] injections;
+        public Injection[] injections;
 
-        internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
+        //internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
+        internal static LuaEnv luaEnv = LoadLua.luaenv; //all lua behaviour shared one luaenv only!
         internal static float lastGCTime = 0;
         internal const float GCInterval = 1;//1 second 
 
@@ -38,6 +39,7 @@ namespace XLuaTest
         private Action luaLateUpdate;
         private Action luaOnDisable;
         private Action luaOnDestroy;
+        private Action luaOnGUI;
         private LuaTable scriptEnv;
 
         void Awake()
@@ -51,21 +53,22 @@ namespace XLuaTest
             meta.Dispose();
 
             scriptEnv.Set("self", this);
-            // foreach (var injection in injections)
-            // {
-            //     scriptEnv.Set(injection.name, injection.value);
-            // }
-
-            luaEnv.DoString(luaScript.text, "TestPage", scriptEnv);
+            foreach (var injection in injections)
+            {
+                scriptEnv.Set(injection.name, injection.value);
+            }
+            
+            luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
 
             Action luaAwake = scriptEnv.Get<Action>("awake");
-            scriptEnv.Get("onenable", out luaOnEnable);
-            scriptEnv.Get("start", out luaStart);
-            scriptEnv.Get("fixedupdate", out luaFixedUpdate);
-            scriptEnv.Get("update", out luaUpdate);
-            scriptEnv.Get("lateupdate", out luaLateUpdate);
-            scriptEnv.Get("ondisable", out luaOnDisable);
-            scriptEnv.Get("ondestroy", out luaOnDestroy);
+            scriptEnv.Get("OnEnable", out luaOnEnable);
+            scriptEnv.Get("Start", out luaStart);
+            scriptEnv.Get("FixedUpdate", out luaFixedUpdate);
+            scriptEnv.Get("Update", out luaUpdate);
+            scriptEnv.Get("LateUpdate", out luaLateUpdate);
+            scriptEnv.Get("OnDisable", out luaOnDisable);
+            scriptEnv.Get("OnDestroy", out luaOnDestroy);
+            scriptEnv.Get("OnGUI", out luaOnGUI);
             
             if (luaAwake != null)
             {
@@ -128,7 +131,13 @@ namespace XLuaTest
                 luaOnDisable();
             }
         }
-
+        void OnGUI()
+        {
+            if (luaOnGUI != null)
+            {
+                luaOnGUI();
+            }
+        }
         void OnDestroy()
         {
             if (luaOnDestroy != null)
@@ -143,7 +152,7 @@ namespace XLuaTest
             luaOnEnable = null;
             luaStart = null;
             scriptEnv.Dispose();
-            //injections = null;
+            injections = null;
         }
     }
 }

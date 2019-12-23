@@ -1,38 +1,40 @@
--- Tencent is pleased to support the open source community by making xLua available.
--- Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
--- Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
--- http://opensource.org/licenses/MIT
--- Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-require("ui")
-local speed = 10
-function onenable()
+local speed = 10;
+
+---lua behavour -------------------------------------------------------------------
+function OnEnable()
 	print("lua onenable...");
 end
 
-function start()
+function Start()
 	ui:Test("testPage");
-	print("lua start...")
-	-- self:GetComponent("Button").onClick:AddListener(function()
-	-- 	print("clicked, you input is '" ..input:GetComponent("InputField").text .."'")
-	-- end)
+	button:GetComponent("Button").onClick:AddListener(Event_Clicked);
 end
 
-function fixedupdate()
+function FixedUpdate()
 end
 
-function update()
+function Update()
 end
 
-function lateupdate()
+function LateUpdate()
 end
 
-function ondisable()
-	print("lua ondisable...");
-
+function OnDisable()
 end
 
-function ondestroy()
-	print("lua ondestroy...")
+function OnGUI()
+	CS.UnityEngine.GUI.Box(CS.UnityEngine.Rect(10,10,100,90),"看这里！");
 end
 
+function OnDestroy()
+end
 
+--- event -------------------------------------------------------------------------
+function Event_Clicked()
+	OnClicked();
+end
+
+-- function -----------------------------------------------------------------------
+function OnClicked()
+	print("clicked");
+end
