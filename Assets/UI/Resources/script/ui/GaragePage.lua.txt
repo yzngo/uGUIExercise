@@ -2,14 +2,12 @@ local test = 10;
 local b = true;
 ---lua behavour -------------------------------------------------------------------
 function Awake()
-	print("test page awake");
+    coverBtn:GetComponent("Button").onClick:AddListener(function() Event_Cover("button2") end);
 end
 function OnEnable()
-	-- print("lua onenable...");
 end
 
 function Start()
-	coverBtn:GetComponent("Button").onClick:AddListener(function() Event_Cover("button2") end);
 end
 
 function FixedUpdate()
