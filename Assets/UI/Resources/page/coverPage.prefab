@@ -860,6 +860,9 @@ MonoBehaviour:
   injections:
   - name: garageBtn
     value: {fileID: 1438893665048682733}
+  properties:
+  - name: sizeX
+    value: 10
 --- !u!1 &7972310883390893667
 GameObject:
   m_ObjectHideFlags: 0

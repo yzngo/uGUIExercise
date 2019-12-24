@@ -19,12 +19,19 @@ public class Injection
     public GameObject value;
 }
 
+[System.Serializable]
+public class Properties
+{
+    public string name;
+    public string value;
+}
 
 [LuaCallCSharp]
 public class LuaBehaviour : MonoBehaviour
 {
     public TextAsset luaScript;
     public Injection[] injections;
+    public Properties[] properties;
     //internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
     internal static LuaEnv luaEnv = LuaEnvInstance.Instance; //all lua behaviour shared one luaenv only!
     internal static float lastGCTime = 0;
@@ -59,6 +66,11 @@ public class LuaBehaviour : MonoBehaviour
         {
             scriptEnv.Set(injection.name, injection.value);
         }
+
+        foreach (var property in properties)
+        {
+            scriptEnv.Set(property.name, property.value);
+        }
         luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
 
         Action luaAwake = scriptEnv.Get<Action>("Awake");
@@ -69,15 +81,14 @@ public class LuaBehaviour : MonoBehaviour
         scriptEnv.Get("LateUpdate", out luaLateUpdate);
         scriptEnv.Get("OnDisable", out luaOnDisable);
         scriptEnv.Get("OnDestroy", out luaOnDestroy);
-        //scriptEnv.Get("Event_Desktop", out luaEventDesktop);
+        scriptEnv.Get("Event_Desktop", out luaEventDesktop);
         scriptEnv.Get("OnGUI", out luaOnGUI);
-        // todo
-        //luaEventDesktop = scriptEnv.Get<FDelegate>("Event_Desktop");
 
         if (luaAwake != null)
         {
             luaAwake();
         }
+
     }
 
 
@@ -165,6 +176,15 @@ public class LuaBehaviour : MonoBehaviour
     {
         if (luaEventDesktop != null){
             return luaEventDesktop(id,param1,param2,param3);
+        }
+        return -1;
+    }
+    //todo
+    public int Message(string id, string param1, string param2, string param3)
+    {
+        if (luaEventDesktop != null)
+        {
+            return luaEventDesktop(id, param1,param2,param3);
         }
         return -1;
     }

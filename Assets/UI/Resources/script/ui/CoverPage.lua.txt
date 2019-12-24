@@ -2,13 +2,16 @@ local test = 10;
 local b = true;
 
 ---lua behavour -------------------------------------------------------------------
+
+-- register event,find component
 function Awake()
 	garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
 end
+
 function OnEnable()
-	-- print("lua onenable...");
 end
 
+--  Use this for initialization
 function Start()
 end
 
