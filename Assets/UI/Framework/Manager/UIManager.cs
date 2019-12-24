@@ -57,7 +57,6 @@ public class UIManager
 
     public void SendMsg(string id, string param1, string param2, string param3)
     {
-        //遍历所有原件，1.是激活状态 2.luabehavour组件 存在， 则调用luabehavour中的message函数
         foreach (KeyValuePair<string,GameObject> page in pageDict)
         {
             var luaBehaviour = page.Value.GetComponent<LuaBehaviour>();

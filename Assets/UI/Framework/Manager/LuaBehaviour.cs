@@ -38,9 +38,9 @@ public class LuaBehaviour : MonoBehaviour
     private Action luaOnDisable;
     private Action luaOnDestroy;
     private Action luaOnGUI;
-
     [CSharpCallLua]
     public delegate int FDelegate(string a, string b, string c,string d);
+    [CSharpCallLua]
     private FDelegate luaEventDesktop;
     private LuaTable scriptEnv;
 
@@ -69,7 +69,7 @@ public class LuaBehaviour : MonoBehaviour
         scriptEnv.Get("LateUpdate", out luaLateUpdate);
         scriptEnv.Get("OnDisable", out luaOnDisable);
         scriptEnv.Get("OnDestroy", out luaOnDestroy);
-        //scriptEnv.Get("Event_Desktop", out luaEventDesktop);
+        scriptEnv.Get("Event_Desktop", out luaEventDesktop);
         scriptEnv.Get("OnGUI", out luaOnGUI);
         // todo
         //luaEventDesktop = scriptEnv.Get<FDelegate>("Event_Desktop");

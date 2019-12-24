@@ -15,7 +15,6 @@ function ui:OpenWindow( page )
     else
         self.self.m_uiMgr:OpenWindow( page );
     end
-    
 end
 
 function ui:CloseWindow( page )
@@ -31,4 +30,10 @@ end
 
 function ui:SendDesktopEvent( event, param1, param2, param3 )
     self.m_uiMgr:SendMsg( event, param1 or "", param2 or "", param3 or "" );
+end
+
+function ui:RegisterControl( object, control, functor, param )
+	object:GetComponent(control).onClick:AddListener(
+        function() functor(param) end
+    );
 end

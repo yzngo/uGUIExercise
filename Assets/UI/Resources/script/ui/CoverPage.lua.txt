@@ -1,9 +1,12 @@
 local test = 10;
 local b = true;
 
+
 ---lua behavour -------------------------------------------------------------------
 function Awake()
-	garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
+	local data = {"1", "2", "3" };
+	ui:RegisterControl( garageBtn, "Button", Event_Garage );
+	-- garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
 end
 function OnEnable()
 	-- print("lua onenable...");
@@ -31,8 +34,6 @@ end
 function OnDestroy()
 end
 
-
-
 --- event -------------------------------------------------------------------------
 function Event_Desktop(id, param0, param1, param2)
 	print("event desktop");
@@ -40,6 +41,7 @@ function Event_Desktop(id, param0, param1, param2)
 end
 
 function Event_Garage(param)
+	print("------------");
 	ui:OpenWindow("garage");
 	ui:CloseWindow(self.gameObject);
 end
