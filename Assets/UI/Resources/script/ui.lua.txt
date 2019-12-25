@@ -37,3 +37,7 @@ function ui:RegisterControl( object, control, functor, param )
         function() functor(param) end
     );
 end
+-- todo
+function ui:SendDesktopEvent1( obj, event, param1, param2, param3 )
+    obj.transform:BroadcastMessage("Message", event, param1, param2, param3 );
+end
