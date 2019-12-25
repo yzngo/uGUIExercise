@@ -12,7 +12,6 @@ namespace Baum2.Editor
 
         public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
-            Debug.Log("-------------------OnPostprocessAllAssets");
             var changed = false;
 
             // Create Directory
