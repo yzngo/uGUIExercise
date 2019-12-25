@@ -857,12 +857,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   luaScript: {fileID: 4900000, guid: ce47061ea31f11f46990033a9e66e9d2, type: 3}
-  injections:
+  gameObjects:
   - name: garageBtn
     value: {fileID: 1438893665048682733}
   properties:
   - name: sizeX
     value: 10
+  sprites:
+  - name: hhaha
+    value: {fileID: 21300000, guid: 2e354bac62d8bb24c98625ff3e2a6352, type: 3}
 --- !u!1 &7972310883390893667
 GameObject:
   m_ObjectHideFlags: 0

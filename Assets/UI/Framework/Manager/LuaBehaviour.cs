@@ -13,25 +13,32 @@ using XLua;
 using System;
 
 [System.Serializable]
-public class Injection
+public class InjectObject
 {
     public string name;
     public GameObject value;
 }
 
 [System.Serializable]
-public class Properties
+public class InjectProperty
 {
     public string name;
     public string value;
 }
 
+[System.Serializable]
+public class InjectSprite
+{
+    public string name;
+    public Sprite value;
+}
 [LuaCallCSharp]
 public class LuaBehaviour : MonoBehaviour
 {
     public TextAsset luaScript;
-    public Injection[] injections;
-    public Properties[] properties;
+    public InjectObject[] gameObjects;
+    public InjectProperty[] properties;
+    public InjectSprite[] sprites;
     //internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
     internal static LuaEnv luaEnv = LuaEnvInstance.Instance; //all lua behaviour shared one luaenv only!
     internal static float lastGCTime = 0;
@@ -62,17 +69,21 @@ public class LuaBehaviour : MonoBehaviour
         meta.Dispose();
 
         scriptEnv.Set("self", this);
-        foreach (var injection in injections)
+        foreach (var go in gameObjects)
         {
-            scriptEnv.Set(injection.name, injection.value);
+            scriptEnv.Set(go.name, go.value);
         }
 
         foreach (var property in properties)
         {
             scriptEnv.Set(property.name, property.value);
         }
-        luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
 
+        foreach(var sprite in sprites){
+            scriptEnv.Set(sprite.name, sprite.value);
+        }
+
+        luaEnv.DoString(luaScript.text, luaScript.name, scriptEnv);
         Action luaAwake = scriptEnv.Get<Action>("Awake");
         scriptEnv.Get("OnEnable", out luaOnEnable);
         scriptEnv.Get("Start", out luaStart);
@@ -169,7 +180,7 @@ public class LuaBehaviour : MonoBehaviour
         luaOnEnable = null;
         luaStart = null;
         scriptEnv.Dispose();
-        injections = null;
+        gameObjects = null;
     }
 
     public int SendMessage(string id,string param1, string param2,string param3)

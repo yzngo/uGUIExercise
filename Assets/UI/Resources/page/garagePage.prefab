@@ -325,9 +325,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   luaScript: {fileID: 4900000, guid: 276d6047736af3240a06daf5ee92f1a6, type: 3}
-  injections:
+  gameObjects:
   - name: coverBtn
     value: {fileID: 1473709772703527671}
+  properties: []
+  sprites: []
 --- !u!1 &1473709772703527671
 GameObject:
   m_ObjectHideFlags: 0
