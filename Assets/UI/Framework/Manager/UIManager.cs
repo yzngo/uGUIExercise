@@ -127,7 +127,7 @@ public class UIManager
     //解析json文件
     private void ParseUIPageListJson()
     {
-        TextAsset textPageList = Resources.Load<TextAsset>("page/UIPageList");
+        TextAsset textPageList = Resources.Load<TextAsset>("Page/UIPageList");
         UIPageList pageList = JsonUtility.FromJson<UIPageList>(textPageList.text);
         foreach (UIPageInfo pageInfo in pageList.list)
         {
