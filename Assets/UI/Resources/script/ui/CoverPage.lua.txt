@@ -6,7 +6,6 @@ local b = true;
 
 -- register event,find component
 function Awake()
-	local data = {"1", "2", "3" };
 	ui:RegisterControl( garageBtn, "Button", Event_Garage );
 	-- garageBtn:GetComponent("Button").onClick:AddListener(function() Event_Garage("button1") end);
 end
@@ -39,17 +38,12 @@ end
 
 --- event -------------------------------------------------------------------------
 function Event_Desktop(id, param0, param1, param2)
-	print("event desktop");
 	return 0;
 end
 
 function Event_Garage(param)
-	print("------------");
 	ui:OpenDialog("garage");
 	ui:CloseWindow(self.gameObject);
 end
 
 -- function -----------------------------------------------------------------------
-function OnClicked(param)
-	print("clicked "..param);
-end
