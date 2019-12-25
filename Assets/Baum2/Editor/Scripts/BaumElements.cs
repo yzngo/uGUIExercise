@@ -424,17 +424,42 @@ namespace Baum2.Editor
         {
             var go = CreateSelf(renderer);
 
+            GameObject childImage = null;
             Graphic lastImage = null;
             RenderChildren(renderer, go, (g, element) =>
             {
                 if (lastImage == null && element is ImageElement) lastImage = g.GetComponent<Image>();
+                childImage = g;
             });
 
+            //todo auto add highlight press select sprite....
             var button = go.AddComponent<Button>();
-            if (lastImage != null)
+            if (lastImage != null /*&& lastImage.name.EndsWith("Normal")*/)
             {
                 button.targetGraphic = lastImage;
             }
+
+            // button.transition = Selectable.Transition.SpriteSwap;
+            // SpriteState state = new SpriteState();
+
+            // var sprite = lastImage.GetComponent<Image>().sprite;
+            // if(lastImage != null && lastImage.name.EndsWith("Highlighted"))
+            // {
+            //     state.highlightedSprite = sprite;
+            // }
+            // if(lastImage != null && lastImage.name.EndsWith("Pressed"))
+            // {
+            //     state.pressedSprite = sprite;
+            // }
+            // if(lastImage != null && lastImage.name.EndsWith("Selected"))
+            // {
+            //     state.selectedSprite = sprite;
+            // }
+            // if(lastImage != null && lastImage.name.EndsWith("Disabled"))
+            // {
+            //     state.disabledSprite = sprite;
+            // }
+            // button.spriteState = state;
 
             SetStretch(go, renderer);
             SetPivot(go, renderer);
