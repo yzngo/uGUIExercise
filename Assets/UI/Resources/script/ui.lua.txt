@@ -2,22 +2,45 @@ ui = {
     m_uiMgr;
 }
 
-function ui:Init( param )
+function    ui:Init( param )
     self.m_uiMgr = CS.UIManager.Instance;
 end
 
-function ui:OpenWindow( page )
-    if type(page) == "string" then
+function    ui:OpenWindow( page )
+    if type( page ) == "string" then
         local obj = self.m_uiMgr:GetPage( page );
         self.m_uiMgr:OpenWindow( obj );
-        self:SendDesktopEvent("hahahhaha");
         return obj;
     else
-        self.self.m_uiMgr:OpenWindow( page );
+        self.m_uiMgr:OpenWindow( page );
+        return page;
     end
 end
 
-function ui:CloseWindow( page )
+function	ui:OpenDialog( page )
+	if type( page ) == "string" then
+		local obj = self.m_uiMgr:GetPage( page );
+		self.m_uiMgr:OpenDialog( obj );
+		return obj;
+	else
+		self.m_uiMgr:OpenDialog( page );
+		return page;
+	end
+end
+
+function	ui:OpenTopmost( page )
+	if type( page ) == "string" then
+		local obj = self.m_uiMgr:GetPage( page );
+		self.m_uiMgr:OpenTopmost( obj );
+		return obj;
+	else
+		self.m_uiMgr:OpenTopmost( page );
+		return page;
+	end
+end
+
+
+function    ui:CloseWindow( page )
     if type( page ) == "string" then
 		local obj = self.m_uiMgr:GetPage( page );
 		self.m_uiMgr:CloseWindow( obj );
@@ -28,16 +51,12 @@ function ui:CloseWindow( page )
 	end
 end
 
-function ui:SendDesktopEvent( event, param1, param2, param3 )
+function    ui:SendDesktopEvent( event, param1, param2, param3 )
     self.m_uiMgr:SendMsg( event, param1 or "", param2 or "", param3 or "" );
 end
 
-function ui:RegisterControl( object, control, functor, param )
+function    ui:RegisterControl( object, control, functor, param )
 	object:GetComponent(control).onClick:AddListener(
         function() functor(param) end
     );
-end
--- todo
-function ui:SendDesktopEvent1( obj, event, param1, param2, param3 )
-    obj.transform:BroadcastMessage("Message", event, param1, param2, param3 );
 end

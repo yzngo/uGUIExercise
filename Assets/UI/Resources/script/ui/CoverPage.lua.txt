@@ -45,7 +45,7 @@ end
 
 function Event_Garage(param)
 	print("------------");
-	ui:OpenWindow("garage");
+	ui:OpenDialog("garage");
 	ui:CloseWindow(self.gameObject);
 end
 
